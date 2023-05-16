@@ -3,6 +3,7 @@ import { Store } from '@/utils/Store';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import React, { useContext } from 'react';
 import { XCircleIcon } from '@heroicons/react/24/outline';
 
@@ -110,4 +111,4 @@ const CartScreen = () => {
   );
 };
 
-export default CartScreen;
+export default dynamic(() => Promise.resolve(CartScreen), { ssr: false });
