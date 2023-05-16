@@ -5,10 +5,12 @@ import data from '@/utils/data';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Store } from '@/utils/Store';
-import { ACTIONS } from '../../utils/constants';
+// import { ACTIONS } from '../../utils/constants';
 
 const ProductScreen = () => {
   const { state, dispatch } = useContext(Store);
+
+  // const router = useRouter();
 
   const { query } = useRouter();
   const { slug } = query;
@@ -23,15 +25,16 @@ const ProductScreen = () => {
     const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
     const quantity = existItem ? existItem.quantity + 1 : 1;
 
-    if (product.countInStock > quantity) {
+    if (product.countInStock < quantity) {
       alert('Sorry, Product is out of stock');
       return;
     }
 
     dispatch({
-      type: ACTIONS.CART_ADD_ITEM,
+      type: 'CART_ADD_ITEM',
       payload: { ...product, quantity },
     });
+    // router.push('/cart');
   };
 
   return (
@@ -73,11 +76,14 @@ const ProductScreen = () => {
               <div>{product.countInStock > 0 ? 'In Stock' : 'Unavailable'}</div>
             </div>
             <button
-              className="primary-button w-full"
+              className="primary-button w-full m-2"
               onClick={addToCartHandler}
             >
               Add to Cart
             </button>
+            <Link href="/cart">
+              <button className="primary-button w-full m-2">Go to Cart</button>
+            </Link>
           </div>
         </div>
       </div>
